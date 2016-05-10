@@ -1,19 +1,35 @@
 import React from 'react';
+
 import {
   Component,
-  Text,
 } from 'react-native';
 
-class Root extends Component {
+import TaskList from './TaskList';
+
+class ReactTodo extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            todos: [
+                {
+                    task: 'Learn React Native',
+                },
+                {
+                    task: 'Learn Redux',
+                },
+            ],
+        };
+    }
+
   render() {
       return (
-        <Text>Hello world Again!</Text>
+        <TaskList todos={this.state.todos}/>
       );
   }
 }
 
 function setup() {
-    return Root;
+    return ReactTodo;
 }
 
 global.LOG = (...args) => {
