@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
   Text,
   TextInput,
+  Alert,
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -57,7 +58,17 @@ class TaskForm extends Component {
 
     onAddPressed() {
         console.log('onAddPressed: ', this.task);
-        this.props.onAdd(this.task);
+        if (!this.task || this.task.trim() === '') {
+            Alert.alert(
+              'Error',
+              'Please enter Task',
+                [
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ]
+            );
+        } else {
+            this.props.onAdd(this.task);
+        }
     }
 
     render() {
