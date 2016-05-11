@@ -9,6 +9,8 @@ import {
 import TaskList from './TaskList';
 import TaskForm from './TaskForm';
 
+const dismissKeyboard = require('dismissKeyboard');
+
 class ReactTodo extends Component {
     constructor(props, context) {
         super(props, context);
@@ -48,11 +50,13 @@ class ReactTodo extends Component {
 
     onCancel() {
         console.log('onCancel pressed');
+        dismissKeyboard();
         this.nav.pop();
     }
 
     onAdd(task) {
         console.log('Task Got added ', task);
+        dismissKeyboard();
         this.nav.pop();
         this.state.todos.push({ task });
         this.setState({ todos: this.state.todos });
