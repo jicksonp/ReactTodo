@@ -3,7 +3,6 @@ import React from 'react';
 import {
   Component,
   Navigator,
-  Text,
   BackAndroid,
 } from 'react-native';
 
@@ -47,11 +46,26 @@ class ReactTodo extends Component {
         });
     }
 
+    onCancel() {
+        console.log('onCancel pressed');
+        this.nav.pop();
+    }
+
+    onAdd(task) {
+        console.log('Task Got added ', task);
+        this.nav.pop();
+        this.state.todos.push({ task });
+        this.setState({ todos: this.state.todos });
+    }
+
     renderScene(route, navigator) {
         switch (route.name) {
         case 'taskform':
             return (
-                <TaskForm/>
+                <TaskForm
+                    onAdd={this.onAdd.bind(this)}
+                    onCancel={this.onCancel.bind(this)}
+                />
             );
         default:
             return (
@@ -71,7 +85,7 @@ class ReactTodo extends Component {
         return (
             <Navigator
                 configureScene={this.configureScene}
-                initialRoute={{ name: 'taskform', index: 0 }}
+                initialRoute={{ name: 'tasklist', index: 0 }}
                 ref={((nav) => {
                     this.nav = nav;
                 })}
