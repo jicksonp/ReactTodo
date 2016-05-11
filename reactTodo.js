@@ -4,6 +4,7 @@ import {
   Component,
   Navigator,
   Text,
+  BackAndroid,
 } from 'react-native';
 
 import TaskList from './TaskList';
@@ -21,6 +22,22 @@ class ReactTodo extends Component {
                 },
             ],
         };
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.backButtonEventListener.bind(this));
+    }
+
+    backButtonEventListener() {
+        const noOfRoutes = this.nav.getCurrentRoutes().length;
+        let status;
+        if (noOfRoutes > 1) {
+            this.nav.pop();
+            status = true;
+        } else {
+            status = false;
+        }
+        return status;
     }
 
     onAddStarted() {
