@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   Component,
+  ToastAndroid,
 } from 'react-native';
 
 import TaskList from './TaskList';
@@ -21,11 +22,19 @@ class ReactTodo extends Component {
         };
     }
 
-  render() {
-      return (
-        <TaskList todos={this.state.todos}/>
-      );
-  }
+    onAddStarted() {
+        console.log('On Add Started');
+        ToastAndroid.show('On Add pressed', ToastAndroid.SHORT);
+    }
+
+    render() {
+        return (
+            <TaskList
+                onAddStarted={this.onAddStarted.bind(this)}
+                todos={this.state.todos}
+            />
+        );
+    }
 }
 
 function setup() {
