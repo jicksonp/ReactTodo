@@ -42,6 +42,17 @@ class ReactTodo extends Component {
         return status;
     }
 
+    onDone(todo) {
+        console.log('Todo completed ', todo.task);
+        const filteredTodos =
+            this.state.todos.filter(
+                (filterTodo) => {
+                    return filterTodo !== todo;
+                }
+            );
+
+        this.setState({ todos: filteredTodos });
+    }
     onAddStarted() {
         this.nav.push({
             name: 'taskform',
@@ -75,6 +86,7 @@ class ReactTodo extends Component {
             return (
                 <TaskList
                     onAddStarted={this.onAddStarted.bind(this)}
+                    onDone={this.onDone.bind(this)}
                     todos={this.state.todos}
                 />
             );
