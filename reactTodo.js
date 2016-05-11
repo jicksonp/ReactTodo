@@ -2,7 +2,8 @@ import React from 'react';
 
 import {
   Component,
-  ToastAndroid,
+  Navigator,
+  Text,
 } from 'react-native';
 
 import TaskList from './TaskList';
@@ -23,15 +24,33 @@ class ReactTodo extends Component {
     }
 
     onAddStarted() {
-        console.log('On Add Started');
-        ToastAndroid.show('On Add pressed', ToastAndroid.SHORT);
+        this.nav.push({
+            name: 'taskform',
+        });
+    }
+
+    renderScene(route, navigator) {
+        switch (route.name) {
+        case 'taskform':
+            return <Text>Add comes from here!</Text>;
+        default:
+            return (
+                <TaskList
+                    onAddStarted={this.onAddStarted.bind(this)}
+                    todos={this.state.todos}
+                />
+            );
+        }
     }
 
     render() {
         return (
-            <TaskList
-                onAddStarted={this.onAddStarted.bind(this)}
-                todos={this.state.todos}
+            <Navigator
+                initialRoute={{ name: 'TaskList', index: 0 }}
+                ref={((nav) => {
+                    this.nav = nav;
+                })}
+                renderScene={this.renderScene.bind(this)}
             />
         );
     }
