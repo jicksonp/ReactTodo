@@ -43,9 +43,14 @@ class ReactTodo extends Component {
         }
     }
 
+    configureScene() {
+        return Navigator.SceneConfigs.FloatFromBottom;
+    }
+
     render() {
         return (
             <Navigator
+                configureScene={this.configureScene}
                 initialRoute={{ name: 'TaskList', index: 0 }}
                 ref={((nav) => {
                     this.nav = nav;
