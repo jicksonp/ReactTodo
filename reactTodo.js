@@ -8,22 +8,19 @@ import {
 
 import TaskList from './TaskList';
 import TaskForm from './TaskForm';
+import store from './todoStore';
 
 const dismissKeyboard = require('dismissKeyboard');
 
 class ReactTodo extends Component {
     constructor(props, context) {
         super(props, context);
-        this.state = {
-            todos: [
-                {
-                    task: 'Learn React Native',
-                },
-                {
-                    task: 'Learn Redux',
-                },
-            ],
-        };
+        this.state = store.getState();
+        store.subscribe(() => {
+            // Below comment is used to remove the lint warning.
+            // Do this only when you are sure that you are calling set state using redux store.
+            this.setState(store.getState()); // eslint-disable-line react/no-set-state
+        });
     }
 
     componentDidMount() {
@@ -42,17 +39,6 @@ class ReactTodo extends Component {
         return status;
     }
 
-    onDone(todo) {
-        console.log('Todo completed ', todo.task);
-        const filteredTodos =
-            this.state.todos.filter(
-                (filterTodo) => {
-                    return filterTodo !== todo;
-                }
-            );
-
-        this.setState({ todos: filteredTodos });
-    }
     onAddStarted() {
         this.nav.push({
             name: 'taskform',
@@ -61,6 +47,7 @@ class ReactTodo extends Component {
 
     onCancel() {
         console.log('onCancel pressed');
+        // TODO :Same code repeated in onAdd function, is it better to create a common function and move this code there?
         dismissKeyboard();
         this.nav.pop();
     }
@@ -69,8 +56,20 @@ class ReactTodo extends Component {
         console.log('Task Got added ', task);
         dismissKeyboard();
         this.nav.pop();
-        this.state.todos.push({ task });
-        this.setState({ todos: this.state.todos });
+        // this.state.todos.push({ task });
+        // this.setState({ todos: this.state.todos });
+        store.dispatch({
+            type: 'ADD_TODO',
+            task,
+        });
+    }
+
+    onDone(todo) {
+        console.log('Todo completed ', todo.task);
+        store.dispatch({
+            type: 'DONE_TODO',
+            todo,
+        });
     }
 
     renderScene(route, navigator) {
